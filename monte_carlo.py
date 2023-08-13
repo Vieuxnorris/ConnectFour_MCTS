@@ -113,7 +113,7 @@ class MonteCarlo(object):
 
         for child in node.children:
             exploitation = child.reward / child.visits
-            exploration = math.sqrt(2.0 * math.log(node.visits) / float(child.visits))
+            exploration = math.sqrt(math.log2(node.visits) / child.visits)
             score = exploitation + self.exploration * exploration
 
             if score == best_score:
