@@ -1,5 +1,6 @@
 import math
 import random
+import config
 from typing import Optional
 
 from game import ConnectFour
@@ -25,9 +26,7 @@ class MonteCarlo(object):
     best_child(node: Node) -> Node
         Return the best child of the node.
     """
-    def __init__(
-        self, iteration: Optional[int] = 1000, exploration: Optional[float] = 1.414
-    ):
+    def __init__(self):
         """
         Initialize the Monte Carlo Tree Search algorithm.
 
@@ -36,8 +35,8 @@ class MonteCarlo(object):
         iteration: the number of iterations
         exploration: the exploration parameter
         """
-        self.iteration = iteration
-        self.exploration = exploration
+        self.iteration = config.ITERATION
+        self.exploration = config.EXPLORATION
 
     def search(self, root: Node) -> int:
         """
