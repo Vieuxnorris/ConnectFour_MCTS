@@ -29,11 +29,6 @@ class MonteCarlo(object):
     def __init__(self):
         """
         Initialize the Monte Carlo Tree Search algorithm.
-
-        Parameters
-        ----------
-        iteration: the number of iterations
-        exploration: the exploration parameter
         """
         self.iteration = config.ITERATION
         self.exploration = config.EXPLORATION
