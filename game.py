@@ -1,4 +1,5 @@
 import copy
+import config
 
 import numpy as np
 
@@ -31,7 +32,7 @@ class ConnectFour(object):
         """
         self.turn = 1
         self.win = 0
-        self.board = np.zeros((6, 7), dtype=np.int8)
+        self.board = np.zeros((config.ROW, config.COLUMN), dtype=np.int8)
         self.last_move = []
 
     def reset_game(self) -> None:
@@ -44,7 +45,7 @@ class ConnectFour(object):
         """
         self.turn = 1
         self.win = 0
-        self.board = np.zeros((6, 7), dtype=np.int8)
+        self.board = np.zeros((config.ROW, config.COLUMN), dtype=np.int8)
         self.last_move = []
 
     def copy(self) -> copy:
@@ -66,8 +67,8 @@ class ConnectFour(object):
         win: 1 if player 1 wins, -1 if player 2 wins, 0 otherwise
         """
         # Check horizontal
-        for i in range(6):
-            for j in range(4):
+        for i in range(config.ROW):
+            for j in range(config.COLUMN - 3):
                 if (
                     self.board[i, j]
                     == self.board[i, j + 1]
@@ -77,8 +78,8 @@ class ConnectFour(object):
                 ):
                     return self.board[i, j]
         # Check vertical
-        for i in range(3):
-            for j in range(7):
+        for i in range(config.ROW - 3):
+            for j in range(config.COLUMN):
                 if (
                     self.board[i, j]
                     == self.board[i + 1, j]
@@ -88,8 +89,8 @@ class ConnectFour(object):
                 ):
                     return self.board[i, j]
         # Check diagonal
-        for i in range(3):
-            for j in range(4):
+        for i in range(config.ROW - 3):
+            for j in range(config.COLUMN - 3):
                 if (
                     self.board[i, j]
                     == self.board[i + 1, j + 1]
@@ -98,8 +99,8 @@ class ConnectFour(object):
                     != 0
                 ):
                     return self.board[i, j]
-        for i in range(3):
-            for j in range(3, 7):
+        for i in range(config.ROW - 3):
+            for j in range(config.ROW - 3, config.COLUMN):
                 if (
                     self.board[i, j]
                     == self.board[i + 1, j - 1]
@@ -118,7 +119,7 @@ class ConnectFour(object):
         -------
         legal_moves: a list of legal moves
         """
-        return [i for i in range(7) if self.board[0][i] == 0]
+        return [i for i in range(config.COLUMN) if self.board[0][i] == 0]
 
     def play(self, move: int) -> int:
         """
@@ -134,7 +135,7 @@ class ConnectFour(object):
         """
         if move not in self.legal_moves():
             raise ValueError("Illegal move")
-        for i in range(5, -1, -1):
+        for i in range(config.ROW - 1, -1, -1):
             if self.board[i][move] == 0:
                 self.board[i][move] = self.turn
                 self.last_move = [i, move]
