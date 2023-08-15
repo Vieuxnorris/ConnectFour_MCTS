@@ -1,24 +1,55 @@
-import random
 import math
+import random
+from typing import Optional
+
+from game import ConnectFour
+from node import Node
 
 
 class MonteCarlo(object):
     """
     Monte Carlo Tree Search algorithm.
 
-    :param iteration: the number of iterations to perform
-    :param exploration: the exploration parameter of the UCB formula
+    Methods
+    -------
+    search(root: Node) -> int
+        Search the best move from the root node.
+    selection(node: Node, turn: int) -> (Node, int)
+        Select the best node to expand.
+    expansion(node: Node) -> Node
+        Expand the node by adding a new child.
+    simulation(state_init: ConnectFour, turn: int) -> float
+        Simulate a random game from the initial state.
+    backpropagation(node: Node, reward: float, turn: int) -> None
+        Backpropagate the reward of the simulation to the root node.
+    best_child(node: Node) -> Node
+        Return the best child of the node.
     """
-    def __init__(self, iteration=1000, exploration=1.414):
+    def __init__(
+        self, iteration: Optional[int] = 1000, exploration: Optional[float] = 1.414
+    ):
+        """
+        Initialize the Monte Carlo Tree Search algorithm.
+
+        Parameters
+        ----------
+        iteration: the number of iterations
+        exploration: the exploration parameter
+        """
         self.iteration = iteration
         self.exploration = exploration
 
-    def search(self, root):
+    def search(self, root: Node) -> int:
         """
-        Search the best move from the current game state.
+        Search the best move from the root node.
 
-        :param root: the current game state
-        :return: the best move to play
+        Parameters
+        ----------
+        root: the root node of the search tree
+
+        Returns
+        -------
+        int: the best move
         """
         for _ in range(self.iteration):
             node, turn = self.selection(root, -1)
@@ -29,13 +60,19 @@ class MonteCarlo(object):
         print(f"{[child.reward / child.visits for child in root.children]}")
         return ans.state.last_move[1]
 
-    def selection(self, node, turn):
+    def selection(self, node: Node, turn: int) -> (Node, int):
         """
-        Select the best child of the node according to the UCB formula until a terminal node is reached.
+        Select the best node to expand.
 
-        :param node: the node to start from
-        :param turn: the turn of the player who played the move leading to this node
-        :return: the selected node
+        Parameters
+        ----------
+        node: the node to start the selection from
+        turn: the turn of the player who played the move leading to this node
+
+        Returns
+        -------
+        node: the node to expand
+        turn: the turn of the player who played the move leading to this node
         """
         while not node.is_terminal():
             if not node.fully_explored():
@@ -46,12 +83,18 @@ class MonteCarlo(object):
 
         return node, turn
 
-    def expansion(self, node):
+    @staticmethod
+    def expansion(node: Node) -> Node:
         """
         Expand the node by adding a new child.
 
-        :param node: the node to expand
-        :return: the new child node
+        Parameters
+        ----------
+        node: the node to expand
+
+        Returns
+        -------
+        node: the new child
         """
         free_cols = node.state.legal_moves()
 
@@ -59,17 +102,24 @@ class MonteCarlo(object):
             if col not in node.children_move:
                 new_state = node.state.copy()
                 new_state.play(col)
+                node.add_child(new_state, col)
                 break
 
-        node.add_child(new_state, col)
         return node.children[-1]
 
-    def simulation(self, state_init, turn):
+    @staticmethod
+    def simulation(state_init: ConnectFour, turn: int) -> float:
         """
         Simulate a random game from the initial state.
 
-        :param state_init: the initial state of the game
-        :return: the reward of the game
+        Parameters
+        ----------
+        state_init: the initial state of the game
+        turn: the turn of the player who played the move leading to this node
+
+        Returns
+        -------
+        reward: the reward of the simulated game
         """
         state = state_init.copy()
 
@@ -80,33 +130,45 @@ class MonteCarlo(object):
         reward_bool = state.is_over()
 
         if reward_bool and turn == -1:
-            reward = 1
+            reward = 1.0
         elif reward_bool and turn == 1:
-            reward = -1
+            reward = -1.0
         else:
-            reward = 0
+            reward = 0.0
         return reward
 
-    def backpropagation(self, node, reward, turn):
+    @staticmethod
+    def backpropagation(node: Node, reward: float, turn: int) -> None:
         """
-        Update the node reward and visit count recursively.
+        Backpropagate the reward of the simulation to the root node.
 
-        :param node: the node to update
-        :param reward: the reward to propagate
-        :param turn: the turn of the player who played the move leading to this node
+        Parameters
+        ----------
+        node: the node to start the backpropagation from
+        reward: the reward of the simulation
+        turn: the turn of the player who played the move leading to this node
+
+        Returns
+        -------
+        none
         """
-        while node != None:
+        while node is not None:
             node.visits += 1
             node.reward -= turn * reward
             node = node.parent
             turn *= -1
 
-    def best_child(self, node):
+    def best_child(self, node: Node) -> Node:
         """
-        Select the child with the highest UCB score.
+        Return the best child of the node.
 
-        :param node: the node whose children to consider
-        :return: the child with the highest UCB score
+        Parameters
+        ----------
+        node: the node to select the best child from
+
+        Returns
+        -------
+        node: the best child
         """
         best_score = -float("inf")
         best_children = []

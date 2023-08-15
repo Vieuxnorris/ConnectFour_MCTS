@@ -1,6 +1,6 @@
 from game import ConnectFour
-from node import Node
 from monte_carlo import MonteCarlo
+from node import Node
 
 if __name__ == "__main__":
     """
