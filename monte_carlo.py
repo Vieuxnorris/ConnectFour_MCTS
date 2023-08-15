@@ -1,7 +1,6 @@
 import math
 import random
 import config
-from typing import Optional
 
 from game import ConnectFour
 from node import Node
