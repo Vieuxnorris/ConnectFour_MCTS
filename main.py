@@ -4,9 +4,11 @@ from node import Node
 
 if __name__ == "__main__":
     """
-    Play a game of Connect Four against the Monte Carlo Tree Search algorithm.
-
-    The algorithm is initialized with 10000 iterations and an exploration parameter of 1.414.
+    Play a game of Connect Four against the computer.
+    
+    Parameters
+    ----------
+    none
     """
     game = ConnectFour()
 
@@ -16,7 +18,7 @@ if __name__ == "__main__":
             game.play(player_move)
         else:
             root = Node(game)
-            monte_carlo = MonteCarlo(iteration=10000)
+            monte_carlo = MonteCarlo()
             best_child = monte_carlo.search(root)
             game.play(best_child)
 
