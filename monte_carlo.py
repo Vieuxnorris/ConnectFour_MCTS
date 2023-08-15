@@ -1,5 +1,7 @@
 import math
 import random
+from typing import Tuple, Any, List, Union
+
 import config
 
 from game import ConnectFour
@@ -32,7 +34,7 @@ class MonteCarlo(object):
         self.iteration = config.ITERATION
         self.exploration = config.EXPLORATION
 
-    def search(self, root: Node) -> int:
+    def search(self, root: Node) -> tuple[Any, list[Any]]:
         """
         Search the best move from the root node.
 
@@ -49,9 +51,12 @@ class MonteCarlo(object):
             reward = self.simulation(node.state, turn)
             self.backpropagation(node, reward, turn)
 
+        prob = []
+        for child in root.children:
+            prob.append(child.visits / root.visits)
+
         ans = self.best_child(root)
-        print(f"{[child.reward / child.visits for child in root.children]}")
-        return ans.state.last_move[1]
+        return ans.state.last_move[1], prob
 
     def selection(self, node: Node, turn: int) -> (Node, int):
         """
