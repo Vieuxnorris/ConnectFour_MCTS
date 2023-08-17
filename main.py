@@ -19,7 +19,7 @@ if __name__ == "__main__":
         else:
             root = Node(game)
             monte_carlo = MonteCarlo()
-            best_child = monte_carlo.search(root)
+            best_child, prob = monte_carlo.search(root)
             game.play(best_child)
 
         game.print_board()
