@@ -27,7 +27,10 @@ The project is structured as follows:
 - `game.py`: file containing the class of the game
 - `monte_carlo.py`: file containing the class of the MCTS algorithm
 - `node.py`: file containing the class of the node of the search tree
+- `train.py`: file containing the training of the MCTS algorithm
+- `model.py`: file containing the neural network model
+- `unit_test.py`: file containing the unit tests
 
 ## Future improvements
-- Add a neural network to improve the MCTS algorithm
+- Add a neural network to improve the MCTS algorithm (in progress)
 - Add a GUI to play the game
