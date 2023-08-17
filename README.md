@@ -4,6 +4,9 @@ Integration of the monte-carlo algorithm with a search tree (MCTS) for the Conne
 ## Description
 This project is a simple implementation of the Monte-Carlo algorithm with a search tree (MCTS) for the ConnectFour game. The game is played by two players, one after the other, on a 6x7 grid. The goal is to align 4 pieces of the same color horizontally, vertically or diagonally. The first player to do so wins the game. The game is played by two players, one after the other, on a 6x7 grid. The goal is to align 4 pieces of the same color horizontally, vertically or diagonally. The first player to do so wins the game. The game is played by two players, one after the other, on a 6x7 grid. The goal is to align 4 pieces of the same color horizontally, vertically or diagonally. The first player to do so wins the game.
 
+## MCTS algorithm
+![MCTS](Images/MCTS.png "MCTS algorithm")
+
 ## Installation
 To install the project, you can clone the repository and then install the dependencies with the following command:
 ```
